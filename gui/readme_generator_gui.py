@@ -1,6 +1,5 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QCheckBox, QPushButton, QTextEdit
-from readme_template import ReadmeTemplate
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QCheckBox, QPushButton, QTextEdit
+from gui.readme_template import ReadmeTemplate
 
 
 class ReadmeGeneratorGUI(QWidget):
@@ -47,14 +46,3 @@ class ReadmeGeneratorGUI(QWidget):
 
         readme_content = template.generate_readme()
         self.readme_text.setPlainText(readme_content)
-
-
-# Create the application
-app = QApplication(sys.argv)
-
-# Create and show the main window
-window = ReadmeGeneratorGUI()
-window.show()
-
-# Run the event loop
-sys.exit(app.exec_())
