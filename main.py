@@ -4,30 +4,29 @@ from gui.new_project_window import NewProjectWindow
 from gui.readme_generator_gui import ReadmeGeneratorGUI
 from gui.about_widget import AboutWidget
 
+
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
 
-         
         self.setWindowTitle('Quick Start')
 
         self.Width = 800
         self.height = int(0.618 * self.Width)
         self.resize(self.Width, self.height)
 
-         
         self.btn_1 = QPushButton('New Project', self)
         self.btn_2 = QPushButton('Readme', self)
         self.btn_3 = QPushButton('About Us', self)
- 
+
         self.btn_1.clicked.connect(self.button1)
         self.btn_2.clicked.connect(self.button2)
         self.btn_3.clicked.connect(self.button3)
- 
+
         self.tab1 = self.ui1()
         self.tab2 = self.ui2()
         self.tab3 = self.ui3()
- 
+
         self.initUI()
 
     def initUI(self):
@@ -46,7 +45,7 @@ class Window(QMainWindow):
         self.right_widget.addTab(self.tab1, '')
         self.right_widget.addTab(self.tab2, '')
         self.right_widget.addTab(self.tab3, '')
- 
+
         self.right_widget.setCurrentIndex(0)
         self.right_widget.setStyleSheet('''QTabBar::tab{width: 0; \
             height: 0; margin: 0; padding: 0; border: none;}''')
@@ -59,7 +58,7 @@ class Window(QMainWindow):
         main_widget = QWidget()
         main_widget.setLayout(main_layout)
         self.setCentralWidget(main_widget)
- 
+
     def button1(self):
         self.right_widget.setCurrentIndex(0)
 
@@ -68,7 +67,7 @@ class Window(QMainWindow):
 
     def button3(self):
         self.right_widget.setCurrentIndex(2)
- 
+
     def ui1(self):
         main_layout = QVBoxLayout()
         main_layout.addWidget(NewProjectWindow())
@@ -95,7 +94,6 @@ class Window(QMainWindow):
         return main
 
 
- 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Window()
