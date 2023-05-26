@@ -1,4 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QComboBox, QTextEdit, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QComboBox, QTextEdit, \
+    QVBoxLayout, QWidget, QMessageBox, QFileDialog, QCheckBox
+import os
+import subprocess
+from gui.GitignoreGenerator import GitignoreGenerator
+from gui.Settings import store_string, retrieve_string
 
 
 class NewProjectWindow(QMainWindow):
@@ -29,6 +34,25 @@ class NewProjectWindow(QMainWindow):
         self.github_url_label = QLabel("GitHub Repo URL:", self)
         self.github_url_textbox = QLineEdit(self)
 
+
+        # Create GUI elements for .gitignore
+        self.label_ide = QLabel("IDEs:")
+        self.input_ide = QComboBox()
+        self.input_ide.addItem("vscode")
+        self.input_ide.addItem("intellij")
+        self.input_ide.addItem("vim")
+
+        self.label_framework = QLabel("Frameworks:")
+        self.input_framework = QComboBox()
+        self.input_framework.addItem("nodejs")
+        self.input_framework.addItem("express")
+        self.input_framework.addItem("golang")
+        self.input_framework.addItem("python")
+        self.input_framework.addItem("java")
+
+        self.label_custom = QLabel("Custom Lines:")
+        self.input_custom = QTextEdit()
+
         # Create the create button
         self.create_button = QPushButton("Create", self)
         self.create_button.clicked.connect(self.create_project)
@@ -44,11 +68,22 @@ class NewProjectWindow(QMainWindow):
         layout.addWidget(self.browse_button)
         layout.addWidget(self.github_url_label)
         layout.addWidget(self.github_url_textbox)
+        layout.addWidget(self.label_ide)
+        layout.addWidget(self.input_ide)
+        layout.addWidget(self.label_framework)
+        layout.addWidget(self.input_framework)
+        layout.addWidget(self.label_custom)
+        layout.addWidget(self.input_custom)
         layout.addWidget(self.create_button)
+
 
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
+
+        if retrieve_string("project_directory"):
+            self.project_directory_textbox.setText(retrieve_string("project_directory"))
+
 
 
     def create_project(self):
@@ -57,6 +92,8 @@ class NewProjectWindow(QMainWindow):
         license_option = self.license_dropdown.currentText()
         github_url = self.github_url_textbox.text()
         project_directory = self.project_directory_textbox.text()
+
+        store_string("project_directory", project_directory)
 
         # Create the project folder in the selected directory
         os.makedirs(os.path.join(project_directory, project_name), exist_ok=True)
@@ -71,10 +108,6 @@ class NewProjectWindow(QMainWindow):
         with open("README.md", "w") as readme_file:
             readme_file.write("# " + project_name + "\n\nThis is my project.")
 
-        # Create a .gitignore file
-        with open(".gitignore", "w") as gitignore_file:
-            gitignore_file.write("/.history \n/.idea \n/.vscode")
-
         # Create the appropriate license file based on the selected license option
         if license_option == "Apache License 2.0":
             with open("LICENSE", "w") as license_file:
@@ -85,6 +118,16 @@ class NewProjectWindow(QMainWindow):
         elif license_option == "MIT License":
             with open("LICENSE", "w") as license_file:
                 license_file.write(MIT_LICENSE_TEXT)
+
+        ide = self.input_ide.currentText()
+        framework = self.input_framework.currentText()
+        custom_lines = self.input_custom.toPlainText().splitlines()
+
+        generator = GitignoreGenerator()
+        gitignore_content = generator.generate(ide, framework, custom_lines)
+
+        with open(".gitignore", "w") as gitignore_file:
+            gitignore_file.write(gitignore_content)
 
         # Add the files to Git
         subprocess.run(["git", "add", "README.md", "LICENSE", ".gitignore"], check=True)
