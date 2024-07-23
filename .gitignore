@@ -1,8 +1,0 @@
-/.history
-/.idea
-/.vscode
-*.pyc
-/venv/
-*.ini
-*.txt
-gui/temp.py
