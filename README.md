@@ -1,6 +1,6 @@
 # QuickStart CLI
 
-A CLI tool for quickly initializing new projects with a README and .gitignore file. It also sets up a Git repository and opens the project in Visual Studio Code. An imcomplete go implemenation can be found [here](https://github.com/shrine2000/QS).
+A CLI tool for quickly initializing new projects with a README and .gitignore file. It also sets up a Git repository and opens the project in Visual Studio Code. An incomplete go implemenation can be found [here](https://github.com/shrine2000/QS).
 
 ## Usage
 
