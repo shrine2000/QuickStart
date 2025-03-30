@@ -1,5 +1,8 @@
 # QuickStart
 
+[![CI](https://github.com/shrine2000/quickstart/actions/workflows/ci.yml/badge.svg)](https://github.com/shrine2000/quickstart/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/shrine2000/quickstart/branch/master/graph/badge.svg)](https://codecov.io/gh/shrine2000/quickstart)
+
 A powerful CLI tool for quickly scaffolding new project structures with best practices.
 
 ## Features
@@ -95,7 +98,7 @@ make check
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/quickstart.git
+   git clone https://github.com/shrine2000/quickstart.git
    cd quickstart
    ```
 

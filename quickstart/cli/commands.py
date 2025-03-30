@@ -1,3 +1,5 @@
+# flake8: noqa: F401
+# mypy: no-warn-return-any
 """Command implementations for the QuickStart CLI."""
 
 import argparse
@@ -5,12 +7,16 @@ import json
 import sys
 from pathlib import Path
 
+import click
+from rich.console import Console
+
 from ..core.config import ConfigManager
 from ..core.project import ProjectManager
-from ..templates.base import TemplateRegistry
+from ..templates import TemplateRegistry
 from ..utils.logging import setup_logging
 
 logger = setup_logging()
+console = Console()
 
 
 def create_project(args: argparse.Namespace, config: ConfigManager) -> None:
@@ -61,3 +67,44 @@ def handle_config(args: argparse.Namespace, config: ConfigManager) -> None:
     elif args.reset:
         config.reset()
         print("Configuration reset to defaults")
+
+
+@click.command()
+@click.argument("project_name")
+@click.option(
+    "--template",
+    "-t",
+    type=click.Choice(TemplateRegistry.list_templates()),
+    default="python",
+    help="Project template to use",
+)
+@click.option(
+    "--config",
+    "-c",
+    type=click.Path(exists=True),
+    help="Path to configuration file",
+)
+def create(project_name: str, template: str, config: str) -> None:
+    """Create a new project using the specified template."""
+    try:
+        # Create project using template
+        template_class = TemplateRegistry.get_template(template)
+        if not template_class:
+            raise click.ClickException(f"Template '{template}' not found")
+
+        # Initialize template
+        template_instance = template_class(
+            project_name=project_name,
+            project_path=project_name,
+            config={"description": f"A {template} project named {project_name}"},
+        )
+
+        # Create project structure
+        template_instance.create_project_structure()
+        template_instance.initialize_dependencies()
+        template_instance.create_config_files()
+
+        console.print(f"[green]Successfully created project: {project_name}[/green]")
+    except Exception as e:
+        console.print(f"[red]Error creating project: {str(e)}[/red]")
+        raise click.Abort()

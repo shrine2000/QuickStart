@@ -1,12 +1,12 @@
 """Tests for project management functionality."""
 
-import logging
 from pathlib import Path
 from typing import Generator
 
 import pytest
 
 from quickstart.core.project import ProjectManager
+
 
 @pytest.fixture
 def project_manager() -> Generator[ProjectManager, None, None]:
@@ -16,7 +16,9 @@ def project_manager() -> Generator[ProjectManager, None, None]:
     # Cleanup
     if Path("test_project").exists():
         import shutil
+
         shutil.rmtree("test_project")
+
 
 def test_create_project(project_manager: ProjectManager) -> None:
     """Test project creation."""

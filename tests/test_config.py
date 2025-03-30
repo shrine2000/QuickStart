@@ -1,6 +1,6 @@
-"""Tests for the config module."""
+"""Tests for configuration management."""
+
 import json
-import os
 from pathlib import Path
 from typing import Generator
 
