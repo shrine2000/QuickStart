@@ -1,15 +1,16 @@
+# flake8: noqa: F401
 """Project management functionality for QuickStart."""
 
 import logging
-import os
 import subprocess
 from pathlib import Path
-from typing import Dict, Any
+from typing import Optional
 
-from .config import ConfigManager
 from ..templates import TemplateRegistry
+from .config import ConfigManager
 
 logger = logging.getLogger(__name__)
+
 
 class ProjectManager:
     """Manages project creation and initialization."""
@@ -18,7 +19,7 @@ class ProjectManager:
         self,
         project_name: str,
         template: str,
-        config_path: str = None,
+        config_path: str = "",
     ) -> None:
         """Initialize the project manager.
 

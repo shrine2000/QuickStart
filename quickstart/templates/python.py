@@ -4,6 +4,7 @@ from pathlib import Path
 
 from .base import ProjectTemplate, TemplateRegistry
 
+
 class PythonTemplate(ProjectTemplate):
     """Template for Python projects."""
 
@@ -16,15 +17,14 @@ class PythonTemplate(ProjectTemplate):
         # Create __init__.py
         self.create_file(
             package_dir / "__init__.py",
-            f'"""Main package for {self.project_name}."""\n\n__version__ = "0.1.0"\n'
+            f'"""Main package for {self.project_name}."""\n\n__version__ = "0.1.0"\n',
         )
 
         # Create test directory
         test_dir = Path(self.project_path) / "tests"
         self.create_directory(test_dir)
         self.create_file(
-            test_dir / "__init__.py",
-            f'"""Tests for {self.project_name}."""\n'
+            test_dir / "__init__.py", f'"""Tests for {self.project_name}."""\n'
         )
 
         # Create test_app.py
@@ -38,10 +38,7 @@ class PythonTemplate(ProjectTemplate):
             f"    captured = capsys.readouterr()\n"
             f'    assert captured.out == "Hello from {self.project_name}!\\n"\n'
         )
-        self.create_file(
-            test_dir / "test_app.py",
-            test_app_content
-        )
+        self.create_file(test_dir / "test_app.py", test_app_content)
 
         # Create docs directory
         docs_dir = Path(self.project_path) / "docs"
@@ -56,10 +53,7 @@ class PythonTemplate(ProjectTemplate):
             f'if __name__ == "__main__":\n'
             f"    main()\n"
         )
-        self.create_file(
-            package_dir / "app.py",
-            app_content
-        )
+        self.create_file(package_dir / "app.py", app_content)
 
     def initialize_dependencies(self) -> None:
         """Initialize Python project dependencies."""
@@ -72,8 +66,7 @@ class PythonTemplate(ProjectTemplate):
             "mypy>=0.900",
         ]
         self.create_file(
-            Path(self.project_path) / "requirements.txt",
-            "\n".join(requirements) + "\n"
+            Path(self.project_path) / "requirements.txt", "\n".join(requirements) + "\n"
         )
 
         # Create setup.py
@@ -82,21 +75,18 @@ class PythonTemplate(ProjectTemplate):
             f"from setuptools import setup, find_packages\n\n"
             f"setup(\n"
             f'    name="{self.project_name}",\n'
-            f"    version=\"0.1.0\",\n"
+            f'    version="0.1.0",\n'
             f"    packages=find_packages(),\n"
             f"    install_requires=[],\n"
             f'    python_requires=">=3.8",\n'
             f"    entry_points={{\n"
-            f"        \"console_scripts\": [\n"
+            f'        "console_scripts": [\n'
             f'            "{self.project_name}={self.project_name}.app:main",\n'
             f"        ],\n"
             f"    }},\n"
             f")\n"
         )
-        self.create_file(
-            Path(self.project_path) / "setup.py",
-            setup_content
-        )
+        self.create_file(Path(self.project_path) / "setup.py", setup_content)
 
     def create_config_files(self) -> None:
         """Create configuration files for the project."""
@@ -138,10 +128,7 @@ ENV/
 htmlcov/
 .pytest_cache/
 """
-        self.create_file(
-            Path(self.project_path) / ".gitignore",
-            gitignore_content
-        )
+        self.create_file(Path(self.project_path) / ".gitignore", gitignore_content)
 
         # Create README.md
         readme_content = (
@@ -168,10 +155,8 @@ htmlcov/
             f"## License\n\n"
             f"MIT\n"
         )
-        self.create_file(
-            Path(self.project_path) / "README.md",
-            readme_content
-        )
+        self.create_file(Path(self.project_path) / "README.md", readme_content)
+
 
 # Register the template
 TemplateRegistry.register("python", PythonTemplate)

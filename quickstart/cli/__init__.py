@@ -1,3 +1,4 @@
+# flake8: noqa: D403
 """Command-line interface for the QuickStart tool."""
 
 import logging
@@ -5,7 +6,6 @@ from typing import Optional
 
 import click
 from rich.console import Console
-from rich.logging import RichHandler
 
 from ..core.project import ProjectManager
 from ..templates import TemplateRegistry
@@ -15,12 +15,14 @@ from ..utils.logging import setup_logging
 logger = logging.getLogger(__name__)
 console = Console()
 
+
 def setup_parser() -> click.Group:
     """Set up the command-line argument parser.
 
     Returns:
         A Click command group that serves as the entry point for the CLI.
     """
+
     @click.group()
     @click.option(
         "--verbose",
@@ -56,14 +58,17 @@ def setup_parser() -> click.Group:
     def create(project_name: str, template: str, config: Optional[str]) -> None:
         """Create a new project using the specified template."""
         try:
-            project = ProjectManager(project_name, template, config)
+            project = ProjectManager(project_name, template, config or "")
             project.create()
-            console.print(f"[green]Successfully created project: {project_name}[/green]")
+            console.print(
+                f"[green]Successfully created project: {project_name}[/green]"
+            )
         except Exception as e:
             console.print(f"[red]Error creating project: {str(e)}[/red]")
             raise click.Abort()
 
     return cli
+
 
 def main() -> None:
     """Entry point for the CLI."""

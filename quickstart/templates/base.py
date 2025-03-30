@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, Any, Optional, Type
+from typing import Any, Dict, List, Optional, Type
 
 
 class ProjectTemplate(ABC):
@@ -86,7 +86,7 @@ class TemplateRegistry:
         return cls._templates.get(name)
 
     @classmethod
-    def list_templates(cls) -> list[str]:
+    def list_templates(cls) -> List[str]:
         """List all registered template names.
 
         Returns:

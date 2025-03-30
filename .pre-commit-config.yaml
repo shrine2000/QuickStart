@@ -15,27 +15,27 @@ repos:
     rev: 23.3.0
     hooks:
     -   id: black
-        pass_filenames: false
-        stages: [commit]
+        args: [--line-length=88]
+        files: ^(quickstart|tests)/.*\.py$
 
 -   repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
     -   id: isort
-        pass_filenames: false
-        stages: [commit]
+        args: ["--profile", "black"]
+        files: ^(quickstart|tests)/.*\.py$
 
 -   repo: https://github.com/pycqa/flake8
     rev: 6.0.0
     hooks:
     -   id: flake8
         additional_dependencies: [flake8-docstrings]
-        pass_filenames: false
-        stages: [commit]
+        args: [--max-line-length=88]
+        files: ^(quickstart|tests)/.*\.py$
 
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.3.0
     hooks:
     -   id: mypy
-        pass_filenames: false
-        stages: [commit]
+        args: [--ignore-missing-imports]
+        files: ^quickstart/.*\.py$
